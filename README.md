@@ -101,7 +101,7 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
 
    ```bash
    gitlab-rails runner 'u = User.find_by(username: "root"); u.password = "secret"; u.password_confirmation = "secret"; u.save!(validate: false); puts "Senha alterada\!"' && \
-   gitlab-rails runner 'u = User.find_by(username: "root"); u.otp_required_for_login = false; u.otp_secret = nil if u.respond_to?(:otp_secret=); u.encrypted_otp_secret = nil if u.respond_to?(:encrypted_otp_secret=); u.save!; puts "2FA desabilitado!"' && \
+   gitlab-rails runner 'u = User.find_by(username: "root"); u.write_attribute(:otp_required_for_login, false); u.write_attribute(:encrypted_otp_secret, nil); u.write_attribute(:encrypted_otp_secret_iv, nil); u.write_attribute(:encrypted_otp_secret_salt, nil); u.write_attribute(:otp_backup_codes, nil); u.save(validate: false); puts "2FA desabilitado!"' && \
    gitlab-ctl restart
    ```
 
