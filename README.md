@@ -14,4 +14,11 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
    
 4. Siga o passo-a-passo da [documentação oficial para instalação no Ubuntu](https://docs.gitlab.com/install/package/ubuntu/) (via _package_/_ominibus_, como está em produção).
 
-   > **Atenção!** Ao seguir o tutorial, atente-se para selecionar sempre as abas "**Community Edition**".
+   > **Atenção!** Ao seguir o tutorial, atente-se para selecionar sempre as abas "**Community Edition**". No momento da instalação, verifique a versão do _backup_ e instale a <u>mesma versão</u>. Por exemplo:
+
+   ```bash
+   apt install -y curl vim
+   curl "https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh" | bash
+   apt-cache madison gitlab-ce
+   apt install gitlab-ce=17.11.4-ce.0
+   ```
