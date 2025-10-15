@@ -37,6 +37,9 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
    # Verifique:
    gitlab-ctl status
 
+   # Garanta que o usuário do PostgreSQl tenha todas as permissões necessárias:
+   sudo gitlab-psql -c "GRANT \"gitlab-psql\" TO gitlab; ALTER USER gitlab WITH SUPERUSER;"
+
    # Execute o restore:
    gitlab-backup restore BACKUP=1760526957_2025_10_15_17.11.4
    ```
