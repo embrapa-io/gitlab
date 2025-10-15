@@ -20,5 +20,5 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
    apt install -y curl vim
    curl "https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh" | bash
    apt-cache madison gitlab-ce
-   apt install gitlab-ce=17.11.4-ce.0
+   EXTERNAL_URL="https://gitlab.orb.local" apt install gitlab-ce=17.11.4-ce.0
    ```
