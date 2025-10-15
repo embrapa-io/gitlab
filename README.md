@@ -31,8 +31,11 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
    mv io_gitlab_2025-10-15_11-15-16/gitlab/1760526957_2025_10_15_17.11.4_gitlab_backup.tar /var/opt/gitlab/backups/
    chmod +r /var/opt/gitlab/backups/*
 
-   # Pare o GitLab:
-   gitlab-ctl stop
+   # Pare os processos que se conectam ao DB:
+   gitlab-ctl stop puma && gitlab-ctl stop sidekiq
+
+   # Verifique:
+   gitlab-ctl status
 
    # Execute o restore:
    gitlab-backup restore BACKUP=1760526957_2025_10_15_17.11.4
@@ -76,3 +79,32 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
        ...
    EOS
    ```
+
+   > **Atenção!** Configure o arquivo acima conforme suas especificidades. Por exemplo, você pode querer utilizar o _mail catcher_ da plataforma nas configurações de SMTP.
+   
+7. Reinicie o GitLab:
+
+   ```bash
+   gitlab-ctl reconfigure && gitlab-rake gitlab:check SANITIZE=true && gitlab-ctl restart
+   ```
+
+8. Verifique a instalação:
+
+   ```bash
+   gitlab-ctl status
+   ```
+
+9. Se tiver optado por não copiar os arquivos de configuração, será necessário alterar a senha de `root` e desabilitar o 2FA:
+
+   ```bash
+   gitlab-rails runner 'u = User.find_by(username: "root"); u.password = "secret"; u.password_confirmation = "secret"; u.save!(validate: false); puts "Senha alterada\!"'
+   gitlab-rails runner 'u = User.find_by(username: "root"); u.otp_required_for_login = false; u.otp_secret = nil if u.respond_to?(:otp_secret=); u.encrypted_otp_secret = nil if u.respond_to?(:encrypted_otp_secret=); u.save!; puts "2FA desabilitado!"'
+   gitlab-ctl restart
+   ```
+
+   Se tiver problemas, veja se o usuário está ativo:
+
+   ```bash
+   gitlab-rails runner 'u = User.find_by(username: "root"); puts [u&.id, u&.email, u&.username, u&.state]'
+   ```
+   
