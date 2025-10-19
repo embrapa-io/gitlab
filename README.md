@@ -81,6 +81,8 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
        label: 'Embrapa'
        ...
    EOS
+
+   alertmanager['enable'] = false
    ```
 
    > **Atenção!** Configure o arquivo acima conforme suas especificidades. Por exemplo, você pode querer utilizar o _mail catcher_ da plataforma nas configurações de SMTP.
