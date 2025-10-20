@@ -85,7 +85,7 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
    alertmanager['enable'] = false
    ```
 
-   > **Atenção!** Configure o arquivo acima conforme suas especificidades. Por exemplo, você pode querer utilizar o _mail catcher_ da plataforma nas configurações de SMTP.
+   > **Atenção!** Configure o arquivo acima conforme suas especificidades. Por exemplo, você pode querer utilizar o _mail catcher_ da plataforma nas configurações de SMTP (neste caso, considere referenciar o _host_ como `docker.for.mac.host.internal`).
    
 7. Reinicie o GitLab:
 
