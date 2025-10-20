@@ -102,7 +102,7 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
 9. Se tiver optado por não copiar os arquivos de configuração, será necessário alterar a senha de `root` e desabilitar o 2FA:
 
    ```bash
-   gitlab-rails runner 'u = User.find_by(username: "root"); u.password = "secret"; u.password_confirmation = "secret"; u.save!(validate: false); puts "Senha alterada\!"' && \
+   gitlab-rails runner 'u = User.find_by(username: "root"); u.password = "RootPass2025!"; u.password_confirmation = "RootPass2025!"; u.save!(validate: false); puts "Senha alterada\!"' && \
    gitlab-rails runner 'u = User.find_by(username: "root"); u.write_attribute(:otp_required_for_login, false); u.write_attribute(:encrypted_otp_secret, nil); u.write_attribute(:encrypted_otp_secret_iv, nil); u.write_attribute(:encrypted_otp_secret_salt, nil); u.write_attribute(:otp_backup_codes, nil); u.save(validate: false); puts "2FA desabilitado!"' && \
    gitlab-ctl restart
    ```
