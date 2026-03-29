@@ -49,10 +49,24 @@ Cliente MCP (Claude, Cursor, VS Code...)
 
 | Campo | Valor |
 |-------|-------|
-| Name | `GitLab MCP Server - Kanban` |
-| Redirect URI | `https://mcp.git.embrapa.io/callback` |
+| Name | `GitLab MCP Server` |
+| Redirect URI | Ver lista abaixo |
+| Trusted | Desmarcado |
 | Confidential | Desmarcado (usa PKCE) |
 | Scopes | `api` + `read_api` + `read_user` |
+
+**Redirect URIs** (uma por linha):
+```
+https://claude.ai/api/mcp/auth_callback
+http://127.0.0.1/oauth/callback
+http://127.0.0.1/callback
+http://127.0.0.1/mcp-auth/callback
+http://localhost/oauth/callback
+http://localhost/callback
+```
+
+O GitLab CE (Doorkeeper) implementa RFC 8252 §7.3: para loopback IPs (`127.0.0.1`),
+a porta é ignorada na comparação. `localhost` (hostname) exige match exato.
 
 5. Salvar e copiar o **Application ID**
 
