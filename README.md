@@ -5,7 +5,7 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
 ## Ambiente de Desenvolvimento
 
 1. Faça o _backup_ no servidor remoto (de produção) utilizando os [scripts oficiais](https://github.com/embrapa-io/backup/).
-2. Crie uma VM local em **Ubuntu Server 20.04 LTS**, atualize e instale pacotes essenciais:
+2. Crie uma VM local em **Ubuntu Server 24.04 LTS**, atualize e instale pacotes essenciais:
    
    ```bash
    sudo su -
