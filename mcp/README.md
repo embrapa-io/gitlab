@@ -67,7 +67,7 @@ cp .env.example .env
 nano .env  # preencher GITLAB_OAUTH_APP_ID
 
 # Subir
-docker compose up -d
+docker compose up --force-recreate --build --remove-orphans --wait -d
 
 # Verificar
 docker compose ps
@@ -112,11 +112,10 @@ GITLAB_TOOLS: "execute_graphql"
 ```
 
 O script:
-1. Para os serviços (`docker compose down`)
-2. Baixa imagens atualizadas (`docker compose pull`)
-3. Sobe os serviços (`docker compose up -d`)
-4. Remove imagens órfãs (`docker image prune -f`)
-5. Exibe status e logs
+1. Baixa imagens atualizadas (`docker compose pull`)
+2. Recria serviços com force-recreate, build e remoção de órfãos (`docker compose up --force-recreate --build --remove-orphans --wait -d`)
+3. Remove imagens órfãs (`docker image prune -f`)
+4. Exibe status e logs
 
 ## Configuração do Nginx
 

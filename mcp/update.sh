@@ -3,14 +3,11 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-echo "==> Parando serviços..."
-docker compose down
-
 echo "==> Baixando imagens atualizadas..."
 docker compose pull
 
-echo "==> Subindo serviços..."
-docker compose up -d
+echo "==> Recriando serviços..."
+docker compose up --force-recreate --build --remove-orphans --wait -d
 
 echo "==> Removendo imagens órfãs..."
 docker image prune -f
