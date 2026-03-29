@@ -63,6 +63,7 @@ http://127.0.0.1/oauth/callback
 http://127.0.0.1/callback
 http://127.0.0.1/mcp-auth/callback
 http://localhost/oauth/callback
+http://127.0.0.1/
 http://localhost/callback
 ```
 
