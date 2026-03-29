@@ -58,6 +58,7 @@ Cliente MCP (Claude, Cursor, VS Code...)
 **Redirect URIs** (uma por linha):
 ```
 https://claude.ai/api/mcp/auth_callback
+cursor://anysphere.cursor-mcp/oauth/callback
 http://127.0.0.1/oauth/callback
 http://127.0.0.1/callback
 http://127.0.0.1/mcp-auth/callback
