@@ -112,10 +112,11 @@ GITLAB_TOOLS: "execute_graphql"
 ```
 
 O script:
-1. Baixa imagens atualizadas (`docker compose pull`)
-2. Recria serviços com force-recreate, build e remoção de órfãos (`docker compose up --force-recreate --build --remove-orphans --wait -d`)
-3. Remove imagens órfãs (`docker image prune -f`)
-4. Exibe status e logs
+1. Builda a imagem a partir do código-fonte (clona `github.com/zereight/gitlab-mcp` no Dockerfile) e recria os serviços (`docker compose up --force-recreate --build --remove-orphans --wait -d`)
+2. Remove imagens órfãs (`docker image prune -f`)
+3. Exibe status e logs
+
+> **Nota**: A imagem é buildada a partir do GitHub via Dockerfile local e não do Docker Hub (`zereight050/gitlab-mcp`), pois a imagem do Hub não inclui funcionalidades recentes como `GITLAB_MCP_OAUTH`.
 
 ## Configuração do Nginx
 

@@ -1,6 +1,7 @@
 services:
   mcp:
-    image: zereight050/gitlab-mcp
+    build: .
+    image: gitlab-mcp:latest
     restart: unless-stopped
     ports:
       - ${PORT}:3002
