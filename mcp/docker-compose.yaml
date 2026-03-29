@@ -1,0 +1,47 @@
+services:
+  mcp:
+    image: zereight050/gitlab-mcp
+    restart: unless-stopped
+    ports:
+      - ${PORT}:3002
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "3002"
+      STREAMABLE_HTTP: "true"
+
+      # MCP OAuth — autenticação por usuário via GitLab
+      GITLAB_MCP_OAUTH: "true"
+      GITLAB_OAUTH_APP_ID: "${GITLAB_OAUTH_APP_ID}"
+      GITLAB_API_URL: "${GITLAB_API_URL}"
+      MCP_SERVER_URL: "${MCP_SERVER_URL}"
+
+      # Filtragem de tools — apenas kanban
+      GITLAB_TOOLSETS: "issues,labels,milestones,projects"
+      USE_MILESTONE: "true"
+
+      # Segurança
+      MAX_SESSIONS: "${MAX_SESSIONS:-500}"
+      MAX_REQUESTS_PER_MINUTE: "${MAX_REQUESTS_PER_MINUTE:-30}"
+      SESSION_TIMEOUT_SECONDS: "${SESSION_TIMEOUT_SECONDS:-3600}"
+
+      # TLS (descomentar se o GitLab usar certificado autoassinado)
+      # NODE_TLS_REJECT_UNAUTHORIZED: "0"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3002/mcp"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+    networks:
+      - default
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
