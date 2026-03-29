@@ -17,7 +17,6 @@ services:
 
       # Filtragem de tools — apenas kanban
       GITLAB_TOOLSETS: "issues,labels,milestones,projects"
-      USE_MILESTONE: "true"
 
       # Segurança
       MAX_SESSIONS: "${MAX_SESSIONS:-500}"
