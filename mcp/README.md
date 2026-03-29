@@ -148,8 +148,8 @@ O MCP com Streamable HTTP usa conexões long-lived (SSE server→client) que exi
 - `GET /authorize`, `POST /token`, `GET /callback` — Fluxo OAuth
 - Headers críticos: `Mcp-Session-Id`, `Last-Event-ID` (resumabilidade)
 
-> **Importante**: A URL do MCP é `https://mcp.git.embrapa.io/mcp` (com `/mcp` no path).
-> O reverse proxy deve encaminhar **todos os paths** ao backend sem rewrite.
+> **Importante**: A URL do MCP para os clientes é `https://mcp.git.embrapa.io/`.
+> O reverse proxy faz rewrite de `= /` para `/mcp` internamente (o servidor escuta em `/mcp`).
 
 ### Nginx Proxy Manager (NPM)
 
@@ -177,7 +177,26 @@ proxy_send_timeout 86400s;
 proxy_set_header Connection $http_connection;
 proxy_set_header X-Forwarded-Proto $scheme;
 chunked_transfer_encoding on;
+
+location = / {
+    rewrite ^ /mcp break;
+    proxy_pass http://200.202.148.18:8016;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_read_timeout 86400s;
+    proxy_send_timeout 86400s;
+    chunked_transfer_encoding on;
+}
 ```
+
+O `location = /` (match exato) reescreve `/` para `/mcp` no backend.
+Os demais paths (`/token`, `/authorize`, `/.well-known/`) passam direto pelo proxy padrão do NPM.
 
 | Configuração | Motivo |
 |--------------|--------|
@@ -198,7 +217,7 @@ Após o deploy, os usuários configuram seus clientes assim:
 {
   "mcpServers": {
     "gitlab-kanban": {
-      "url": "https://mcp.git.embrapa.io/mcp"
+      "url": "https://mcp.git.embrapa.io/"
     }
   }
 }
@@ -210,7 +229,7 @@ Após o deploy, os usuários configuram seus clientes assim:
 {
   "mcpServers": {
     "gitlab-kanban": {
-      "url": "https://mcp.git.embrapa.io/mcp"
+      "url": "https://mcp.git.embrapa.io/"
     }
   }
 }
@@ -224,7 +243,7 @@ Após o deploy, os usuários configuram seus clientes assim:
   "servers": {
     "gitlab-kanban": {
       "type": "http",
-      "url": "https://mcp.git.embrapa.io/mcp"
+      "url": "https://mcp.git.embrapa.io/"
     }
   }
 }
@@ -238,7 +257,7 @@ Após o deploy, os usuários configuram seus clientes assim:
   "mcp": {
     "gitlab-kanban": {
       "type": "remote",
-      "url": "https://mcp.git.embrapa.io/mcp"
+      "url": "https://mcp.git.embrapa.io/"
     }
   }
 }
@@ -254,7 +273,7 @@ docker compose ps
 docker compose logs -f mcp
 
 # Health check
-curl -s https://mcp.git.embrapa.io/mcp \
+curl -s https://mcp.git.embrapa.io/ \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"initialize","id":1,"params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"healthcheck","version":"1.0"}}}'
 
