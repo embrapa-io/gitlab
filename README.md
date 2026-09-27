@@ -99,17 +99,17 @@ Configuração de _deploy_ do **GitLab** no ecossistema do **Embrapa I/O**.
    gitlab-ctl status
    ```
 
-9. Se tiver optado por não copiar os arquivos de configuração, será necessário alterar a senha de `root` e desabilitar o 2FA:
+9. Se tiver optado por não copiar os arquivos de configuração, será necessário alterar a senha do administrador (usuário de id 1, originalmente `root` — o username pode ter sido renomeado) e desabilitar o 2FA:
 
    ```bash
-   gitlab-rails runner 'u = User.find_by(username: "root"); u.password = "RootPass2025!"; u.password_confirmation = "RootPass2025!"; u.save!(validate: false); puts "Senha alterada\!"' && \
-   gitlab-rails runner 'u = User.find_by(username: "root"); u.write_attribute(:otp_required_for_login, false); u.write_attribute(:encrypted_otp_secret, nil); u.write_attribute(:encrypted_otp_secret_iv, nil); u.write_attribute(:encrypted_otp_secret_salt, nil); u.write_attribute(:otp_backup_codes, nil); u.save(validate: false); puts "2FA desabilitado!"' && \
+   gitlab-rails runner 'u = User.find_by(id: 1); u.password = "RootPass2025!"; u.password_confirmation = "RootPass2025!"; u.save!(validate: false); puts "Senha alterada\!"' && \
+   gitlab-rails runner 'u = User.find_by(id: 1); u.write_attribute(:otp_required_for_login, false); u.write_attribute(:encrypted_otp_secret, nil); u.write_attribute(:encrypted_otp_secret_iv, nil); u.write_attribute(:encrypted_otp_secret_salt, nil); u.write_attribute(:otp_backup_codes, nil); u.save(validate: false); puts "2FA desabilitado!"' && \
    gitlab-ctl restart
    ```
 
    Se tiver problemas, veja se o usuário está ativo:
 
    ```bash
-   gitlab-rails runner 'u = User.find_by(username: "root"); puts [u&.id, u&.email, u&.username, u&.state]'
+   gitlab-rails runner 'u = User.find_by(id: 1); puts [u&.id, u&.email, u&.username, u&.state]'
    ```
    
